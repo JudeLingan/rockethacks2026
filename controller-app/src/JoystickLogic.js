@@ -1,15 +1,24 @@
 import { Joystick } from 'react-joystick-component';
 
-function handleMove(event) {
-	const paragraph = document.getElementById("joystick-status")
+var dir = {
+	x: 0.0,
+	y: 0.0
+}
 
-	paragraph.textContent = "moving -> x: " + event.x.toFixed(2) + ", y: " + event.y.toFixed(2)
+function setDir(x, y) {
+	dir.x = x
+	dir.y = y
+
+	const paragraph = document.getElementById("joystick-status")
+	paragraph.textContent = "moving -> x: " + x.toFixed(2) + ", y: " + y.toFixed(2)
+}
+
+function handleMove(event) {
+	setDir(event.x, event.y)
 }
 
 function handleStop() {
-	const paragraph = document.getElementById("joystick-status")
-
-	paragraph.textContent = "stopped"
+	setDir(0.0, 0.0)
 }
 
 export function JoystickLogic() {
