@@ -34,3 +34,8 @@ The main points we aim to achieve are as follows:
 - [ ] Pilot Screen
 - [ ] Scanning view
 - [ ] Finalized map
+
+### Robot
+- [ ] IT MOVES!!!
+- [ ] Ultrasound/Lidar Scanning
+- [ ] Full Autonomous Movement
