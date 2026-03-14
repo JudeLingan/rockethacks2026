@@ -1,7 +1,7 @@
 # RocketHacks2026 - Team BlackWall - 
 
 ## About
-This is a project made for the 2026 RocketHacks Hackathon
+This is Team BlackWall's project made for the 2026 RocketHacks Hackathon
 
 ## Goals
 We aim to make a robot that moves and scans its environement, returning it to the user over the internet.
