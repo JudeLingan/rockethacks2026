@@ -2,10 +2,10 @@
 
 ## About
 This is project made for the 2026 RocketHacks Hackathon. Team Blackwall consists of 4 people:
-- Jude
-- Ricky 
-- Anthony
-- Gamma
+- Jude CS
+- Ricky CSE
+- Anthony CSE
+- Gamma CYBR
 
 ## Goals
 We aim to make a robot that moves and scans its environement, returning it to the user over the internet.
