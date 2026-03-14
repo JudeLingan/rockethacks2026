@@ -4,9 +4,7 @@ import threading
 import time
 import os
 
-# =============================================================================
 # CONFIGURATION — replace placeholders before deploying
-# =============================================================================
 SERVER_IP   = "0.0.0.0"        # TODO: replace with backend server's static IP
 SERVER_PORT = 5005              # TODO: replace with backend server's UDP port
 LISTEN_PORT = 5006              # Port this Pi listens on for incoming data
@@ -15,7 +13,6 @@ ID_FILE     = "robot_id.txt"    # Text file containing this robot's name/ID
 SEND_INTERVAL      = 0.3        # seconds between telemetry sends
 HEARTBEAT_INTERVAL = 1.0        # seconds between heartbeat pings
 MAX_RETRIES        = 5          # how many consecutive send failures before stopping
-# =============================================================================
 
 # Shared state — written by receiver thread, read by motor/control logic
 control = {
@@ -29,16 +26,12 @@ stop_event = threading.Event()
 def load_robot_id(path: str) -> str:
     """Read robot name/ID from a text file. Exits if file is missing."""
     if not os.path.exists(path):
-        raise FileNotFoundError(
-            f"Robot ID file '{path}' not found. "
-            "Create it and put your robot's name/ID on the first line."
-        )
+        raise FileNotFoundError(f"Robot ID file '{path}' not found.\nCreate it and put your robot's name/ID on the first line.")
     with open(path, "r") as f:
         robot_id = f.readline().strip()
     if not robot_id:
         raise ValueError(f"Robot ID file '{path}' is empty.")
     return robot_id
-
 
 def get_local_ip() -> str:
     """Best-effort method to get the Pi's current outbound IP address."""
@@ -47,12 +40,9 @@ def get_local_ip() -> str:
             s.connect((SERVER_IP, SERVER_PORT))
             return s.getsockname()[0]
     except Exception:
-        return "unknown"
+        return "unknown local_ip"
 
-
-# ---------------------------------------------------------------------------
 # Receiver thread — listens for incoming UDP packets from the backend
-# ---------------------------------------------------------------------------
 def receiver(listen_port: int):
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -64,6 +54,7 @@ def receiver(listen_port: int):
         try:
             data, addr = sock.recvfrom(4096)
         except socket.timeout:
+            print("Socket currently in timeout")
             continue
         except OSError:
             break
@@ -90,9 +81,7 @@ def receiver(listen_port: int):
     print("[receiver] Stopped.")
 
 
-# ---------------------------------------------------------------------------
 # Sender thread — sends telemetry every SEND_INTERVAL seconds
-# ---------------------------------------------------------------------------
 def sender(robot_id: str, send_interval: float, heartbeat_interval: float):
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     consecutive_failures = 0
@@ -111,8 +100,6 @@ def sender(robot_id: str, send_interval: float, heartbeat_interval: float):
 
         packet = {
             "type":   "telemetry",
-            "id":     robot_id,
-            "ip":     current_ip,
             "speed":  speed,
             "turn":   turn,
             "ts":     now,
@@ -120,7 +107,12 @@ def sender(robot_id: str, send_interval: float, heartbeat_interval: float):
 
         # Upgrade to heartbeat if interval has elapsed
         if now - last_heartbeat >= heartbeat_interval:
-            packet["type"] = "heartbeat"
+            packet = {
+                "type": "heartbeat",
+                "id":     robot_id,
+                "ip":     current_ip,
+                "ts":     now,
+            }
             last_heartbeat = now
 
         try:
