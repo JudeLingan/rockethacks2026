@@ -2,6 +2,7 @@
 
 ## About
 This is Team BlackWall's project made for the 2026 RocketHacks Hackathon
+* jude wuz here
 
 ## Goals
 We aim to make a robot that moves and scans its environement, returning it to the user over the internet.
