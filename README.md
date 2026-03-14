@@ -2,7 +2,7 @@
 
 ## About
 This is project made for the 2026 RocketHacks Hackathon. Team Blackwall consists of 4 people:
-- Jude wuz here
+- Jude
 - Ricky 
 - Anthony
 - Gamma
