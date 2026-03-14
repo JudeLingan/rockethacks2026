@@ -1,12 +1,12 @@
 import { Joystick } from 'react-joystick-component';
 
-export function handleMove(event) {
+function handleMove(event) {
 	const paragraph = document.getElementById("joystick-status")
 
 	paragraph.textContent = "moving -> x: " + event.x.toFixed(2) + ", y: " + event.y.toFixed(2)
 }
 
-export function handleStop() {
+function handleStop() {
 	const paragraph = document.getElementById("joystick-status")
 
 	paragraph.textContent = "stopped"
