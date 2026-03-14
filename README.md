@@ -2,8 +2,8 @@
 
 ## About
 This is project made for the 2026 RocketHacks Hackathon. Team Blackwall consists of 4 people:
-- Jude
-- Ricky
+- Jude wuz here
+- Ricky 
 - Anthony
 - Gamma
 
@@ -29,3 +29,8 @@ The main points we aim to achieve are as follows:
    - [ ] Firewall Implementation
    - [ ] Encryption
 
+### Web Interface
+- [ ] Home Screen
+- [ ] Pilot Screen
+- [ ] Scanning view
+- [ ] Finalized map
