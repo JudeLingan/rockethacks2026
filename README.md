@@ -12,3 +12,17 @@ The main points we aim to achieve are as follows:
 - [ ] Lidar/IR Scanner
 - [ ] Make Robot Autonomous
 
+### Cyber-Security Objectives
+# Cybersecurity Objectives for Team Blackwall
+- [ ] Harden Network
+   - [ ] Solid Password/Passkey
+   - [ ] Port Mapping/Closing
+     - [ ] Port (p) 21
+     - [ ] p22 SSH
+     - [ ] p23 Telnet
+     - [ ] p25 SMTP
+     - [ ] p53 DNS
+     - [ ] etc: https://techhyme.com/40-commonly-targeted-ports-by-hackers/
+   - [ ] Firewall Implementation
+   - [ ] Encryption
+
