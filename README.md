@@ -2,10 +2,10 @@
 
 ## About
 This is project made for the 2026 RocketHacks Hackathon. Team Blackwall consists of 4 people:
-- Jude CS
-- Ricky CSE
-- Anthony CSE
-- Gamma CYBR
+- Jude 		(CS)
+- Ricky 		(CSE)
+- Anthony 	(CSE)
+- Gamma 		(CYBR)
 
 ## Goals
 We aim to make a robot that moves and scans its environement, returning it to the user over the internet.
@@ -34,6 +34,18 @@ The main points we aim to achieve are as follows:
 - [ ] Pilot Screen
 - [ ] Scanning view
 - [ ] Finalized map
+
+### Backend
+- [ ] Receive Packet from raspberry pi
+- [ ] Handle data from raspberry pi
+- [ ] Send instruction to raspberry pi
+- [ ] Differentiate between telemetry and heartbeat packets
+
+### Raspberry Pi
+- [ ] Client to recieve and send packets to Backend
+- [ ] Interprets commands for movement
+	- [ ] Speed
+	- [ ] Direction
 
 ### Robot
 - [ ] IT MOVES!!!

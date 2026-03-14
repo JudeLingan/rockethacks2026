@@ -98,13 +98,6 @@ def sender(robot_id: str, send_interval: float, heartbeat_interval: float):
             speed = control["speed"]
             turn  = control["turn"]
 
-        packet = {
-            "type":   "telemetry",
-            "speed":  speed,
-            "turn":   turn,
-            "ts":     now,
-        }
-
         # Upgrade to heartbeat if interval has elapsed
         if now - last_heartbeat >= heartbeat_interval:
             packet = {
@@ -115,12 +108,20 @@ def sender(robot_id: str, send_interval: float, heartbeat_interval: float):
             }
             last_heartbeat = now
 
+        else: # sends this information as default
+            packet = {
+                "type":   "telemetry",
+                "speed":  speed,
+                "turn":   turn,
+                "ts":     now,
+            }
+
         try:
             data = json.dumps(packet).encode("utf-8")
             sock.sendto(data, (SERVER_IP, SERVER_PORT))
             consecutive_failures = 0
 
-            label = packet["type"].upper()
+            label = packet["type"].lower()
             print(f"[sender] {label} → {SERVER_IP}:{SERVER_PORT} | ip={current_ip} | "
                   f"speed={speed:+.2f}, turn={turn:+.2f}")
 
@@ -138,9 +139,7 @@ def sender(robot_id: str, send_interval: float, heartbeat_interval: float):
     print("[sender] Stopped.")
 
 
-# ---------------------------------------------------------------------------
 # Entry point
-# ---------------------------------------------------------------------------
 if __name__ == "__main__":
     try:
         robot_id = load_robot_id(ID_FILE)
