@@ -1,7 +1,11 @@
-# RocketHacks2026 - Team BlackWall - 
+# RocketHacks2026 - Team BlackWall
 
 ## About
-This is project made for the 2026 RocketHacks Hackathon
+This is project made for the 2026 RocketHacks Hackathon. Team Blackwall consists of 4 people:
+- Jude
+- Ricky
+- Anthony
+- Gamma
 
 ## Goals
 We aim to make a robot that moves and scans its environement, returning it to the user over the internet.
@@ -13,7 +17,6 @@ The main points we aim to achieve are as follows:
 - [ ] Make Robot Autonomous
 
 ### Cyber-Security Objectives
-# Cybersecurity Objectives for Team Blackwall
 - [ ] Harden Network
    - [ ] Solid Password/Passkey
    - [ ] Port Mapping/Closing
