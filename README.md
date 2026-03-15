@@ -60,8 +60,8 @@ The main points we aim to achieve are as follows:
 - [ ] CAD
     - [x] Wheels
     - [x] Chassis
-    - [ ] Power Cell Holder
-    - [ ] Streamlining
-    - [ ] Misc.
+    - [x] Power Cell Holder
+    - [ ] ~Streamlining~
+    - [x] Misc.
 ### Names
 - [x] Erebus
