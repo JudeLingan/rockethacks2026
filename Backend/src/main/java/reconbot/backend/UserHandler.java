@@ -1,58 +1,44 @@
 package reconbot.backend;
 
-import java.net.*;
-import java.io.*;
-import java.util.concurrent.atomic.AtomicInteger;
+import org.springframework.web.socket.TextMessage;
+import org.springframework.web.socket.WebSocketSession;
+import org.springframework.web.socket.handler.TextWebSocketHandler;
 
-public class UserHandler {
-	private ServerSocket serverSocket;
-	private Socket clientSocket;
-	private PrintWriter out;
-	private BufferedReader in;
-	private AtomicInteger currentChar;
+/**
+ * Accepts WebSocket connections from the browser frontend.
+ * Each text frame received (e.g. "F\n", "B\n") is forwarded
+ * directly to ConnectionHandler, which relays it to the Pi over TCP (port 12344).
+ */
+public class UserHandler extends TextWebSocketHandler {
 
-	public UserHandler() {
-		currentChar = new AtomicInteger();
-		currentChar.set('s');
-	}
+    private final ConnectionHandler connectionHandler;
 
-	public void start(int port, ConnectionHandler connectionHandler) {
-		try {
-			System.out.println("Connection Started");
-			serverSocket = new ServerSocket(port);
-			clientSocket = serverSocket.accept();
-			out = new PrintWriter(clientSocket.getOutputStream(), true);
-			in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-			while (true) {
-				String nextLine = in.readLine();
-				if (nextLine == null || nextLine == "") continue;
-				System.out.println(nextLine);
-				connectionHandler.getOut().println(nextLine);
-			}
-		}
-		catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-		finally {
-			System.out.println("connection ended");
-			stop();
-		}
-	}
+    public UserHandler(ConnectionHandler connectionHandler) {
+        this.connectionHandler = connectionHandler;
+    }
 
-	public char getCurrentChar() {
-		return (char)currentChar.get();
-	}
+    @Override
+    public void afterConnectionEstablished(WebSocketSession session) {
+        System.out.println("Frontend connected: " + session.getId());
+    }
 
-	public void stop() {
-		try {
-			in.close();
-			out.close();
-			clientSocket.close();
-			serverSocket.close();
-		}
-		catch (Exception e) {
-			System.out.println(e.getMessage());
-			System.exit(1);
-		}
-	}
+    @Override
+    protected void handleTextMessage(WebSocketSession session, TextMessage message) {
+        String payload = message.getPayload().trim();
+        if (payload.isEmpty()) return;
+        System.out.println("CMD from frontend: " + payload);
+        connectionHandler.getOut().println(payload);
+    }
+
+    @Override
+    public void afterConnectionClosed(WebSocketSession session,
+                                      org.springframework.web.socket.CloseStatus status) {
+        System.out.println("Frontend disconnected: " + session.getId());
+    }
+
+    @Override
+    public void handleTransportError(WebSocketSession session, Throwable ex) {
+        System.out.println("WebSocket error: " + ex.getMessage());
+    }
 }
+

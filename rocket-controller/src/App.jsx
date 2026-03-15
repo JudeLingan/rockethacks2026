@@ -50,23 +50,24 @@ const GLOBAL_STYLE = `
   button, input, a { font-family: var(--f); }
 `;
 
-// ─── 1-Byte ASCII Command Map ─────────────────────────────────────────────────
-//   Each value is a single printable ASCII character (1 byte over the wire).
-//   The WebSocket server on the Pi receives this raw byte and routes it to TCP.
+// ─── ASCII Command Map ────────────────────────────────────────────────────────
+//   Commands are sent as text lines (e.g. "F\n") matching the Java backend's
+//   BufferedReader.readLine() in UserHandler (port 12345).
+//   UserHandler forwards each line to ConnectionHandler → Pi (port 12344).
 //
-//   Byte table:
-//     F (0x46) — forward
-//     B (0x42) — backward
-//     L (0x4C) — left
-//     R (0x52) — right
-//     S (0x53) — stop  (also used for E-Stop)
+//   Command table:
+//     F — forward
+//     B — backward
+//     L — left
+//     R — right
+//     S — stop  (also used for E-Stop)
 //
 const CMD_MAP = {
-  forward:  "F",  // 0x46
-  backward: "B",  // 0x42
-  left:     "L",  // 0x4C
-  right:    "R",  // 0x52
-  stop:     "S",  // 0x53
+  forward:  "F",
+  backward: "B",
+  left:     "L",
+  right:    "R",
+  stop:     "S",
   // legacy aliases sent by keyboard handler
   f:        "F",
   b:        "B",
@@ -75,9 +76,10 @@ const CMD_MAP = {
   s:        "S",
 };
 
-// Hard-coded WebSocket port (change ONLY here to update everywhere)
-const WS_PORT = 8765;
-const DEFAULT_WS_URL     = `ws://raspberrypi.local:${WS_PORT}`;
+// Backend WebSocket endpoint — Spring Boot serves WebSocket at /control on port 12345.
+// ConnectionHandler still uses raw TCP to reach the Pi on port 12344.
+const WS_PORT = 12345;
+const DEFAULT_WS_URL     = `ws://raspberrypi.local:${WS_PORT}/control`;
 const DEFAULT_STREAM_URL = "http://raspberrypi.local:8080/stream";
 
 // ─── Shared ───────────────────────────────────────────────────────────────────
@@ -137,7 +139,7 @@ function HomeScreen({ setPage }) {
           <span style={{ color:"var(--red)", WebkitTextStroke:"2px var(--red)", WebkitTextFillColor:"transparent" }}>CONTROL</span>
         </h1>
         <p style={{ color:"var(--white-dim)", fontSize:13, lineHeight:1.85, maxWidth:460, margin:"0 auto 46px" }}>
-          Real-time remote vehicle control over http with
+          Real-time remote vehicle control over HTTP with
           full keyboard + D-pad interface — all from your browser.
         </p>
 
@@ -160,7 +162,7 @@ function HomeScreen({ setPage }) {
         </div>
 
         <div style={{ display:"flex", gap:28, justifyContent:"center", borderTop:"1px solid var(--grey)", paddingTop:28, flexWrap:"wrap" }}>
-          {[["Hardware","Raspberry Pi 4B"],["COMMS","WebSockets / TCP"],["TEAM","BlackWall"]].map(([k,v])=>(
+          {[["Hardware","Raspberry Pi 4B"],["COMMS","WS → TCP:12345"],["TEAM","BlackWall"]].map(([k,v])=>(
             <div key={k} style={{ textAlign:"center" }}>
               <div style={{ fontSize:9, color:"var(--red)", letterSpacing:"0.25em" }}>{k}</div>
               <div style={{ fontSize:13, marginTop:5 }}>{v}</div>
@@ -188,12 +190,13 @@ function ControlScreen() {
     setLog(prev => [...prev.slice(-49), { ts, msg, type }]);
   }, []);
 
-  // ── Core send: encodes action name → single ASCII byte → WebSocket ──────────
+  // ── Core send: action → text command → WebSocket text frame ─────────────────
   //
-  //   sendCommand("forward")  →  ws.send(Uint8Array[ 0x46 ])   ("F")
-  //   sendCommand("stop")     →  ws.send(Uint8Array[ 0x53 ])   ("S")
+  //   sendCommand("forward")  →  ws.send("F\n")
+  //   sendCommand("stop")     →  ws.send("S\n")
   //
-  //   The Pi-side bridge reads exactly 1 byte and forwards it over TCP.
+  //   websockify on the Pi proxies WebSocket → TCP 12345, where
+  //   UserHandler.readLine() picks up each line and forwards it to the robot.
   //
   const sendCommand = useCallback((action) => {
     if (!wsRef.current || wsRef.current.readyState !== WebSocket.OPEN) {
@@ -207,32 +210,21 @@ function ControlScreen() {
       return;
     }
 
-    // Encode to a 1-byte binary frame (Uint8Array with a single ASCII codepoint)
-    const buf = new Uint8Array([char.charCodeAt(0)]);
-    wsRef.current.send(buf);
-
-    addLog(`TX → 0x${buf[0].toString(16).toUpperCase().padStart(2,"0")} '${char}'`, "tx");
+    // Send as a newline-terminated text frame — Java readLine() strips the '\n'
+    wsRef.current.send(char + "\n");
+    addLog(`TX → '${char}' (text line to UserHandler)`, "tx");
   }, [addLog]);
 
   const connect = useCallback(() => {
     if (wsRef.current) wsRef.current.close();
-    addLog(`Connecting to ${wsUrl} (port ${WS_PORT})...`, "info");
+    addLog(`Connecting to ${wsUrl} (Java UserHandler WebSocket → TCP:12344)...`, "info");
     try {
       const ws = new WebSocket(wsUrl);
-      ws.binaryType = "arraybuffer"; // receive binary frames cleanly
       wsRef.current = ws;
-      ws.onopen    = () => { setConnected(true);  addLog("WebSocket connected — binary mode, 1-byte cmds", "ok"); };
-      ws.onclose   = () => { setConnected(false); addLog("WebSocket closed", "warn"); };
-      ws.onerror   = () => addLog("Connection error", "error");
-      ws.onmessage = e => {
-        // Handle both binary ACK bytes and text frames from the Pi
-        if (e.data instanceof ArrayBuffer) {
-          const byte = new Uint8Array(e.data)[0];
-          addLog(`RX ← 0x${byte.toString(16).toUpperCase().padStart(2,"0")} '${String.fromCharCode(byte)}'`, "rx");
-        } else {
-          addLog(`RX ← ${e.data}`, "rx");
-        }
-      };
+      ws.onopen  = () => { setConnected(true);  addLog("WebSocket open — text-line mode, commands forwarded to TCP:12344", "ok"); };
+      ws.onclose = () => { setConnected(false); addLog("WebSocket closed", "warn"); };
+      ws.onerror = () => addLog("WebSocket connection error", "error");
+      ws.onmessage = e => addLog(`RX ← ${e.data}`, "rx");
     } catch {
       addLog("Invalid WebSocket URL", "error");
     }
@@ -313,8 +305,8 @@ function ControlScreen() {
       {configOpen && (
         <div style={{ maxWidth:1200, margin:"0 auto 16px", background:"var(--surface)", border:"1px solid var(--grey)", borderRadius:3, padding:16, display:"grid", gridTemplateColumns:"1fr 1fr", gap:12 }}>
           {[
-            ["WEBSOCKET URL",   wsUrl,     setWsUrl,     DEFAULT_WS_URL],
-            ["MJPEG STREAM URL",streamUrl, setStreamUrl, DEFAULT_STREAM_URL],
+            ["WEBSOCKET URL (websockify proxy)", wsUrl,     setWsUrl,     DEFAULT_WS_URL],
+            ["MJPEG STREAM URL",                 streamUrl, setStreamUrl, DEFAULT_STREAM_URL],
           ].map(([label,val,setter,ph]) => (
             <div key={label}>
               <label style={{ fontSize:9, color:"var(--grey-text)", display:"block", marginBottom:6, letterSpacing:"0.15em" }}>{label}</label>
@@ -324,7 +316,7 @@ function ControlScreen() {
           ))}
           {/* Port reference badge */}
           <div style={{ gridColumn:"1/-1", fontSize:9, color:"var(--grey-text)", letterSpacing:"0.1em", paddingTop:6, borderTop:"1px solid var(--grey)" }}>
-            HARD-CODED WS PORT: <span style={{ color:"var(--red)" }}>{WS_PORT}</span> — edit <code>WS_PORT</code> in source to change
+            WS ENDPOINT: <span style={{ color:"var(--red)" }}>:{WS_PORT}/control</span> → Java UserHandler → TCP:12344 → Pi
           </div>
         </div>
       )}
@@ -398,8 +390,8 @@ function ControlScreen() {
               {[
                 ["STATUS",    connected?"ONLINE":"OFFLINE",  connected?"var(--red)":"var(--grey-text)"],
                 ["STREAM",    connected?"ACTIVE":"INACTIVE", connected?"#22C55E":"var(--grey-text)"],
-                ["TRANSPORT", "WebSocket",                   "var(--white-dim)"],
-                ["CMD SIZE",  "1 byte",                      "var(--red)"],
+                ["TRANSPORT", "WS → TCP:12344",               "var(--white-dim)"],
+                ["CMD SIZE",  "text line",                     "var(--red)"],
               ].map(([l,v,c]) => (
                 <div key={l} style={{ background:"var(--surface2)", borderRadius:2, padding:"8px 10px" }}>
                   <div style={{ fontSize:8, color:"var(--grey-text)", letterSpacing:"0.2em", marginBottom:4 }}>{l}</div>
@@ -411,7 +403,7 @@ function ControlScreen() {
 
           {/* Byte map reference */}
           <div style={{ background:"var(--surface)", border:"1px solid var(--grey)", borderRadius:3, padding:13 }}>
-            <div style={{ fontSize:9, color:"var(--grey-text)", letterSpacing:"0.18em", marginBottom:10 }}>BYTE MAP · PORT {WS_PORT}</div>
+            <div style={{ fontSize:9, color:"var(--grey-text)", letterSpacing:"0.18em", marginBottom:10 }}>CMD MAP · :{WS_PORT}/control</div>
             <div style={{ display:"flex", flexDirection:"column", gap:4 }}>
               {Object.entries({forward:"F",backward:"B",left:"L",right:"R",stop:"S"}).map(([action, char]) => (
                 <div key={action} style={{ display:"flex", justifyContent:"space-between", alignItems:"center", fontSize:10 }}>
@@ -454,7 +446,7 @@ const SPECS = [
   { label:"OS",      value:"RPi OS Lite 64-bit"     },
   { label:"CAMERA",  value:"USB Webcam 720p@30fps"  },
   { label:"VIDEO",   value:"~80ms latency"    },
-  { label:"COMMS",   value:"WebSockets → TCP bridge" },
+  { label:"COMMS",   value:"WS:12345/control → TCP:12344" },
   { label:"CONTROL", value:"D-pad + KeyBoard"     },
   { label:"RANGE",   value:"~50m over Wi-fi LAN"  },
   { label:"POWER",   value:"USB-C PD 5V 3A"         },
@@ -593,9 +585,9 @@ function DemoScreen() {
 
 // ─── ABOUT ────────────────────────────────────────────────────────────────────
 const FAQ_ITEMS = [
-  { q:"What WebSocket port does the Pi use?",               a:`By default the backend listens on port ${WS_PORT}. You can change this in the Config panel of the Control Interface before connecting.` },
+  { q:"What ports does the backend use?", a:`The Java backend exposes a WebSocket endpoint at ws://[host]:${WS_PORT}/control for the browser frontend. Internally it maintains a raw TCP connection to the Pi on port 12344 (ConnectionHandler). No proxy needed — Spring Boot serves WebSocket natively.` },
   { q:"What software serves the MJPEG stream?",             a:"We recommend mjpeg-streamer or motion on the Raspberry Pi 4B. It streams the USB webcam over WebSockets on port 8080 with minimal latency — typically under 100ms on a local network." },
-  { q:"Why WebSocket instead of raw TCP from the browser?", a:"Browsers can't open raw TCP sockets for security reasons. Our backend runs a WebSocket-to-TCP bridge on the Pi, so the frontend sends WebSocket messages which are forwarded directly to the RC control server." },
+  { q:"Why WebSocket instead of raw TCP from the browser?", a:"Browsers can't open raw TCP sockets for security reasons. The Java Spring Boot backend now natively accepts WebSocket connections at /control on port 12345 — no proxy needed. It forwards commands internally to the Pi over a raw TCP socket on port 12344." },
   { q:"What commands does the frontend send?",              a:"Single ASCII bytes: F (forward), B (backward), L (left), R (right), S (stop). Each command is exactly 1 byte — no JSON overhead, no framing." },
   { q:"Can I use this on mobile?",                          a:"Yes — the D-pad uses touch events and works on mobile browsers. Keyboard shortcuts are desktop only." },
   { q:"What latency should I expect?",                      a:"Command round-trip over local WiFi: typically under 20ms. MJPEG video feed latency: 80–150ms depending on resolution and congestion." },
@@ -606,7 +598,7 @@ const TOOLS_USED = [
   { name:"GPIO Zero / RPi.GPIO", icon:"🔌", role:"Python library — PWM signals to ESC (throttle) and servo (steering)" },
   { name:"React + Vite",         icon:"⚛", role:"Frontend framework — fast SPA with zero-reload screen navigation" },
   { name:"Raspberry Pi OS",      icon:"🐧", role:"Lite 64-bit headless OS running on the Pi 4B" },
-  { name:"WebSockets",        icon:"🌐", role:"Browser-native HTTP client — sends raw 1-byte binary, no dependencies" },
+  { name:"Spring WebSocket",        icon:"🌐", role:"Browser WebSocket → Spring Boot /control endpoint → TCP:12344 → Pi" },
   { name:"Git / GitHub",         icon:"🐙", role:"Version control and public project hosting for the hackathon repo" },
 ];
 
@@ -625,8 +617,8 @@ function FAQItem({ q, a }) {
 
 function AboutScreen() {
   const sections = [
-    { tag:"01 — THE PROJECT",  title:"Remote RC Control\nOver TCP + WebSockets",  body:"RocketHacks 2026 is a real-time remote-controlled vehicle platform built on a Raspberry Pi 4B. The system bridges browser-based controls to physical RC hardware through a lightweight TCP server, delivering live video feedback via a USB webcam MJPEG stream — all with sub-100ms latency on a local network." },
-    { tag:"02 — HOW IT WORKS", title:"Architecture\nOverview",                   body:"The browser frontend connects via WebSockets to Java based bridge using sockets, which the connects to Python running on the Raspberry Pi. The bridge translates single-byte ASCII commands into TCP signals consumed by the RC controller process, which drives the vehicle's motors and steering." },
+    { tag:"01 — THE PROJECT",  title:"Remote RC Control\nOver WebSocket + TCP",  body:"RocketHacks 2026 is a real-time remote-controlled vehicle platform built on a Raspberry Pi 4B. The system bridges browser-based controls to physical RC hardware through a lightweight TCP server, delivering live video feedback via a USB webcam MJPEG stream — all with sub-100ms latency on a local network." },
+    { tag:"02 — HOW IT WORKS", title:"Architecture\nOverview", body:"The browser frontend connects via WebSocket to a websockify proxy on the Pi, which bridges to the Java backend's UserHandler (TCP port 12345). UserHandler forwards each text command to ConnectionHandler (TCP port 12344), which relays it to the Python RC controller driving the vehicle's motors and steering." },
     { tag:"03 — INSPIRATION",  title:"Applications &\nMotivation",               body:"Inspired by search-and-rescue robotics, remote inspection drones, and FPV racing, this project explores how affordable single-board computers can bridge the gap between consumer RC hardware and professional teleoperation systems. The goal: a platform anyone can build, extend, and deploy." },
 	  {tag:"04 - IN 24HRS", title:"WHAT GOT\nDONE", body:"We achived a few of our main goals includeing: a moving system from web-interfaced user commands, a bi-directional socket based WebSockets/TCP network and a functioning robot made from a Raspberry Pi. "},
   ];
@@ -640,7 +632,7 @@ function AboutScreen() {
         </h1>
         <p style={{ color:"var(--white-dim)", fontSize:13, lineHeight:1.9, maxWidth:560, textAlign: "center", margin: "0 auto"}}>
           A hackathon-built remote control vehicle platform powered by Raspberry Pi 4B,
-          real-time WebSocket telemetry, and live MJPEG video streaming.
+          real-time WebSocket + TCP telemetry, and live MJPEG video streaming.
         </p>
       </div>
 
@@ -678,7 +670,7 @@ function AboutScreen() {
       <div style={{ background:"var(--surface)", border:"1px solid var(--grey)", borderRadius:3, padding:"24px 26px", marginBottom:56 }}>
         <div style={{ fontSize:9, color:"var(--grey-text)", letterSpacing:"0.22em", marginBottom:18 }}>TECH STACK</div>
         <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(138px,1fr))", gap:10 }}>
-          {[["HARDWARE","Raspberry Pi 4B"],["PROTOCOL","WebSockets + TCP"],["FRONTEND","React + Vite + Js"],["LANGUAGES","Python / Java / JS"]].map(([k,v]) => (
+          {[["HARDWARE","Raspberry Pi 4B"],["PROTOCOL","WS + websockify + TCP"],["FRONTEND","React + Vite + Js"],["LANGUAGES","Python / Java / JS"]].map(([k,v]) => (
             <div key={k} style={{ background:"var(--surface2)", padding:"11px 13px", borderRadius:2 }}>
               <div style={{ fontSize:8, color:"var(--red)", letterSpacing:"0.22em", marginBottom:5 }}>{k}</div>
               <div style={{ fontSize:12 }}>{v}</div>
