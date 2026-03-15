@@ -5,7 +5,7 @@
 # RocketHacks2026 - Team BlackWall
 
 ## About
-This is project made for the 2026 RocketHacks Hackathon. Team Blackwall consists of 4 people:
+This is project made for the 2026 RocketHacks Hackathon. Team BlackWall consists of 4 people:
 - Jude 		(CS)
 - Ricky 		(CSE)
 - Anthony 	(CSE)
