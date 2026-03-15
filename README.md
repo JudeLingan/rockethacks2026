@@ -51,3 +51,9 @@ The main points we aim to achieve are as follows:
 - [ ] IT MOVES!!!
 - [ ] Ultrasound/Lidar Scanning
 - [ ] Full Autonomous Movement
+- [ ] CAD
+    - [x] Wheels
+    - [ ] Chassis
+    - [ ] Power Cell Holder
+    - [ ] Streamlining
+    - [ ] Misc.
