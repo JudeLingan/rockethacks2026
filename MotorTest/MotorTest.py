@@ -1,72 +1,46 @@
-import RPi.GPIO as GPIO
-import time
+from gpiozero import LED
+from time import sleep
 
-# GPIO pin numbers (BCM mode) — adjust if your wiring differs
-IN1 = 2
-IN2 = 3
-IN3 = 4
-IN4 = 5
+leftMotorPos = LED(17)
+leftMotorNeg = LED(27)
+rightMotorPos = LED(22)
+rightMotorNeg = LED(23)
 
-def setup():
-    GPIO.setmode(GPIO.BCM)  # Use BCM GPIO numbering
-    GPIO.setwarnings(False)
-    GPIO.setup(IN1, GPIO.OUT)
-    GPIO.setup(IN2, GPIO.OUT)
-    GPIO.setup(IN3, GPIO.OUT)
-    GPIO.setup(IN4, GPIO.OUT)
+def leftCW():
+  leftMotorPos.on()
+  leftMotorNeg.on()
 
-# Rotates motor A clockwise for `duration` seconds
-def motor_a_cw(duration):
-    GPIO.output(IN1, GPIO.HIGH)
-    GPIO.output(IN2, GPIO.LOW)
-    time.sleep(duration)
-    # Brake: both HIGH
-    GPIO.output(IN1, GPIO.HIGH)
-    GPIO.output(IN2, GPIO.HIGH)
+def leftCCW():
+  leftMotorPos.on()
+  leftMotorNeg.off()
 
-# Rotates motor A counter-clockwise for `duration` seconds
-def motor_a_ccw(duration):
-    GPIO.output(IN1, GPIO.LOW)
-    GPIO.output(IN2, GPIO.HIGH)
-    time.sleep(duration)
-    # Brake: both HIGH
-    GPIO.output(IN1, GPIO.HIGH)
-    GPIO.output(IN2, GPIO.HIGH)
+def rightCW():
+  rightMotorPos.on()
+  rightMotorNeg.on()
 
-# Rotates motor B clockwise for `duration` seconds
-def motor_b_cw(duration):
-    GPIO.output(IN3, GPIO.HIGH)
-    GPIO.output(IN4, GPIO.LOW)
-    time.sleep(duration)
-    # Brake: both HIGH
-    GPIO.output(IN3, GPIO.HIGH)
-    GPIO.output(IN4, GPIO.HIGH)
+def rightCCW():
+  rightMotorPos.on()
+  rightMotorNeg.off()
 
-# Rotates motor B counter-clockwise for `duration` seconds
-def motor_b_ccw(duration):
-    GPIO.output(IN3, GPIO.LOW)
-    GPIO.output(IN4, GPIO.HIGH)
-    time.sleep(duration)
-    # Brake: both HIGH
-    GPIO.output(IN3, GPIO.HIGH)
-    GPIO.output(IN4, GPIO.HIGH)
+def stop():
+  leftMotorPos.on()
+  leftMotorNeg.on()
+  rightMotorPos.on()
+  rightMotorNeg.on()
+  sleep(1)
 
-def loop():
-    while True:
-        motor_a_cw(5)
-        time.sleep(0.5)
-        motor_a_ccw(5)
-        time.sleep(0.5)
-        motor_b_cw(5)
-        time.sleep(0.5)
-        motor_b_ccw(5)
-        time.sleep(10)
-
-if __name__ == "__main__":
-    setup()
-    try:
-        loop()
-    except KeyboardInterrupt:
-        print("Stopping...")
-    finally:
-        GPIO.cleanup()  # Reset all GPIO pins on exit
+def main():
+  while True:
+    leftCW()
+    sleep(5)
+    stop()
+    leftCCW()
+    sleep(5)
+    stop()
+    rightCW()
+    sleep(5)
+    stop()
+    rightCCW()
+    sleep(5)
+    stop
+    sleep(10)
