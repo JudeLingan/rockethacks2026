@@ -64,3 +64,7 @@ The main points we aim to achieve are as follows:
     - [ ] ~Streamlining~
     - [ ] ~Misc.~
 - [x] Name
+
+## Misc.
+# Links
+- https://devpost.com/software/project-erebus#updates
