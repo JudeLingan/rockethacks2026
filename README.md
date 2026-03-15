@@ -63,3 +63,40 @@ The main points we aim to achieve are as follows:
     - [ ] Power Cell Holder
     - [ ] Streamlining
     - [ ] Misc.
+### Names
+- [ ] Erebus
+- [ ] Cerebus
+- [ ] Cynosure
+- [ ] Victor
+- [ ] Canto
+- [ ] Corrosion
+- [ ] Midnight
+- [ ] Nightfall/Knightfall
+- [ ] Lonely
+- [ ] Scream
+- [ ] Only You
+- [ ] Project Tiptoe
+- [ ] Project Carrion
+- [ ] Vulture
+- [ ] Corvus
+- [ ] Psycho
+- [ ] Project Carchadon
+- [ ] Ritual
+- [ ] Last Light
+- [ ] Eclipse
+- [ ] Nay Amour
+- [ ] Chernobog
+- [ ] Blair
+- [ ] Fathom
+- [ ] Empty Heart
+- [ ] Moder
+- [ ] Longing
+- [ ] Nihilus
+- [ ] Bane
+- [ ] Insidious
+- [ ] Maul
+- [ ] Valkorion
+- [ ] Whiro
+- [ ] Ahriman
+- [ ] Ravana
+- [ ] Arsan Duolai
