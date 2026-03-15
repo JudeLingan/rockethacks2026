@@ -15,10 +15,10 @@ This is project Erebus made for the 2026 RocketHacks Hackathon. Team BlackWall c
 We aim to make a robot that moves and scans its environement, returning it to the user over the internet.
 The main points we aim to achieve are as follows:
 - [x] Robot that moves
-- [ ] Front-End Web-App Interface
+- [X] Front-End Web-App Interface
 - [ ] ~Cybersecurity Optimization~
 - [ ] ~Lidar/IR Scanner~
-    - [ ] Video Camera
+- [ ] Video Camera
 - [ ] Make Robot Autonomous
 
 ### ~Cyber-Security Objectives~
@@ -42,16 +42,16 @@ The main points we aim to achieve are as follows:
 - [X] Viewing screen
 
 ### Backend
-- [ ] Receive Packet from raspberry pi
+- [X] Receive Packet from raspberry pi
 - [ ] Handle data from raspberry pi
-- [ ] Send instruction to raspberry pi
+- [X] Send instruction to raspberry pi
 - [ ] Differentiate between ~telemetry~ and heartbeat packets
 
 ### Raspberry Pi
 - [ ] Client to recieve and send packets to Backend
 - [ ] Interprets commands for movement
 	- [ ] Speed
-	- [ ] Direction
+	- [X] Direction
 
 ### Robot
 - [x] IT MOVES!!!
@@ -63,5 +63,5 @@ The main points we aim to achieve are as follows:
     - [x] Power Cell Holder
     - [ ] ~Streamlining~
     - [x] Misc.
-### Names
+### Robot Name
 - [x] Erebus
