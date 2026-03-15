@@ -80,7 +80,9 @@ function TopBar({ page, setPage }) {
   return (
     <header style={{ position:"fixed", top:0, left:0, right:0, zIndex:100, background:"rgba(10,10,10,0.94)", backdropFilter:"blur(14px)", borderBottom:"1px solid var(--grey)", display:"flex", alignItems:"center", justifyContent:"space-between", padding:"0 24px", height:54 }}>
       <div style={{ display:"flex", alignItems:"center", gap:10, cursor:"pointer" }} onClick={()=>setPage("home")}>
-        <img src="Logo.png" alt="RocketHacks logo" style={{ width:36, height:36, objectFit:"contain", imageRendering:"pixelated" }}/>
+        <div style={{ width:36, height:36, borderRadius:"50%", background:"#fff", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
+          <img src="Logo.png" alt="RocketHacks logo" style={{ width:30, height:30, objectFit:"contain", imageRendering:"pixelated" }}/>
+        </div>
         <span style={{ fontSize:14, letterSpacing:"0.14em" }}>ROCKETHACKS<span style={{ color:"var(--red)" }}>2026</span></span>
       </div>
       <nav style={{ display:"flex", gap:3 }}>
