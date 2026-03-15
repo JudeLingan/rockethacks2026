@@ -3,7 +3,7 @@
 </p>  
 
 # RocketHacks2026 - Team BlackWall
-
+![image alt](https://github.com/JudeLingan/rockethacks2026/blob/ffe6fc4e5f2e41173e172723bf66f72bdd945dd0/Screenshot%202026-03-15%20082438.png)
 ## About
 This is project Erebus made for the 2026 RocketHacks Hackathon. Team BlackWall consists of 4 people:
 - Jude 		(CS)
