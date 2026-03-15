@@ -25,7 +25,7 @@ public class UserHandler {
 			in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 			while (true) {
 				String nextLine = in.readLine();
-				if (nextLine == null) break;
+				if (nextLine == null || nextLine == "") continue;
 				System.out.println(nextLine);
 				connectionHandler.getOut().println(nextLine);
 			}
@@ -34,6 +34,7 @@ public class UserHandler {
 			System.out.println(e.getMessage());
 		}
 		finally {
+			System.out.println("connection ended");
 			stop();
 		}
 	}
