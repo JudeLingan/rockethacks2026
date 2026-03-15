@@ -10,11 +10,7 @@ import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 @EnableWebSocket
 class BeanConfiguration implements WebSocketConfigurer {
 
-    private final ConnectionHandler connectionHandler;
-
-    BeanConfiguration(ConnectionHandler connectionHandler) {
-        this.connectionHandler = connectionHandler;
-    }
+    private ConnectionHandler connectionHandler;
 
     @Bean
     public ConnectionHandler connectionHandler() {
@@ -24,6 +20,7 @@ class BeanConfiguration implements WebSocketConfigurer {
         Thread t = new Thread(() -> ch.start(12344));
         t.setDaemon(true);
         t.start();
+		connectionHandler = ch;
         return ch;
     }
 
