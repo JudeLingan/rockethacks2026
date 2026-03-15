@@ -17,7 +17,8 @@ The main points we aim to achieve are as follows:
 - [ ] Robot that moves
 - [ ] Front-End Web-App Interface
 - [ ] Cyber-Security Optimization
-- [ ] Lidar/IR Scanner
+- [ ] ~Lidar/IR Scanner~
+    - [ ] Video Camera
 - [ ] Make Robot Autonomous
 
 ### Cyber-Security Objectives
