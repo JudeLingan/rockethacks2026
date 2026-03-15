@@ -1,3 +1,7 @@
+<p align="center">
+<img src="https://static0.gamerantimages.com/wordpress/wp-content/uploads/2021/02/Cyberpunk-2077-Alt-Beyond-The-Blackwall.jpg" width="1000" alt="BlackWall">
+</p>  
+
 # RocketHacks2026 - Team BlackWall
 
 ## About
