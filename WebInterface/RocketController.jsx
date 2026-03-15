@@ -187,7 +187,7 @@ function ControlScreen() {
   const disconnect = useCallback(()=>{ wsRef.current?.close(); setConnected(false); },[]);
 
   useEffect(()=>{
-    const km={ArrowUp:"forward",ArrowDown:"backward",ArrowLeft:"left",ArrowRight:"right",w:"forward",s:"backward",a:"left",d:"right"," ":"stop"};
+    const km={ArrowUp:"f",ArrowDown:"b",ArrowLeft:"l",ArrowRight:"right",w:"f",s:"b",a:"l",d:"r"," ":"s"};
     const dn=e=>{ const a=km[e.key]; if(!a)return; e.preventDefault(); if(!activeKeys.has(e.key)){ setActiveKeys(p=>new Set([...p,e.key])); sendCommand(a); } };
     const up=e=>{ const a=km[e.key]; if(!a)return; setActiveKeys(p=>{const n=new Set(p);n.delete(e.key);return n;}); if(a!=="stop")sendCommand("stop"); };
     window.addEventListener("keydown",dn); window.addEventListener("keyup",up);
