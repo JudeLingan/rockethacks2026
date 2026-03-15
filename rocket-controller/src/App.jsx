@@ -78,8 +78,8 @@ const CMD_MAP = {
 
 // Backend WebSocket endpoint — Spring Boot serves WebSocket at /control on port 12345.
 // ConnectionHandler still uses raw TCP to reach the Pi on port 12344.
-const WS_PORT = 12344;
-const DEFAULT_WS_URL     = `ws://localhost:${WS_PORT}/websocket`;
+const WS_PORT = 12345;
+const DEFAULT_WS_URL     = `ws://127.0.0.1:${WS_PORT}/control`;
 const DEFAULT_STREAM_URL = "http://raspberrypi.local:8080/stream";
 
 // ─── Shared ───────────────────────────────────────────────────────────────────
