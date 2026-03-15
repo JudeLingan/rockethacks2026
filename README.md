@@ -64,19 +64,4 @@ The main points we aim to achieve are as follows:
     - [ ] Streamlining
     - [ ] Misc.
 ### Names
-- [ ] Erebus
-- [ ] Cerebus
-- [ ] Corrosion
-- [ ] Midnight
-- [ ] Nightfall/Knightfall
-- [ ] Lonely
-- [ ] Scream
-- [ ] Project Carrion
-- [ ] Vulture
-- [ ] Corvus
-- [ ] Project Carchadon
-- [ ] Last Light
-- [ ] Eclipse
-- [ ] Chernobog
-- [ ] Empty Heart
-- [ ] Longing
+- [x] Erebus
