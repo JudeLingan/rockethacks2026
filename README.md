@@ -1,7 +1,11 @@
+<p align="center">
+<img src="https://static0.gamerantimages.com/wordpress/wp-content/uploads/2021/02/Cyberpunk-2077-Alt-Beyond-The-Blackwall.jpg" width="900" alt="BlackWall">
+</p>  
+
 # RocketHacks2026 - Team BlackWall
 
 ## About
-This is project made for the 2026 RocketHacks Hackathon. Team Blackwall consists of 4 people:
+This is project made for the 2026 RocketHacks Hackathon. Team BlackWall consists of 4 people:
 - Jude 		(CS)
 - Ricky 		(CSE)
 - Anthony 	(CSE)
@@ -13,7 +17,8 @@ The main points we aim to achieve are as follows:
 - [ ] Robot that moves
 - [ ] Front-End Web-App Interface
 - [ ] Cyber-Security Optimization
-- [ ] Lidar/IR Scanner
+- [ ] ~Lidar/IR Scanner~
+    - [ ] Video Camera
 - [ ] Make Robot Autonomous
 
 ### Cyber-Security Objectives
@@ -30,10 +35,11 @@ The main points we aim to achieve are as follows:
    - [ ] Encryption
 
 ### Web Interface
-- [ ] Home Screen
-- [ ] Pilot Screen
-- [ ] Scanning view
-- [ ] Finalized map
+- [X] Home Screen
+- [X] Pilot Screen
+- [ ] ~~Scanning view~~
+- [ ] ~~Finalized map~~
+- [X] Viewing screen
 
 ### Backend
 - [ ] Receive Packet from raspberry pi
@@ -51,3 +57,46 @@ The main points we aim to achieve are as follows:
 - [ ] IT MOVES!!!
 - [ ] Ultrasound/Lidar Scanning
 - [ ] Full Autonomous Movement
+- [ ] CAD
+    - [x] Wheels
+    - [ ] Chassis
+    - [ ] Power Cell Holder
+    - [ ] Streamlining
+    - [ ] Misc.
+### Names
+- [ ] Erebus
+- [ ] Cerebus
+- [ ] Cynosure
+- [ ] Victor
+- [ ] Canto
+- [ ] Corrosion
+- [ ] Midnight
+- [ ] Nightfall/Knightfall
+- [ ] Lonely
+- [ ] Scream
+- [ ] Only You
+- [ ] Project Tiptoe
+- [ ] Project Carrion
+- [ ] Vulture
+- [ ] Corvus
+- [ ] Psycho
+- [ ] Project Carchadon
+- [ ] Ritual
+- [ ] Last Light
+- [ ] Eclipse
+- [ ] Nay Amour
+- [ ] Chernobog
+- [ ] Blair
+- [ ] Fathom
+- [ ] Empty Heart
+- [ ] Moder
+- [ ] Longing
+- [ ] Nihilus
+- [ ] Bane
+- [ ] Insidious
+- [ ] Maul
+- [ ] Valkorion
+- [ ] Whiro
+- [ ] Ahriman
+- [ ] Ravana
+- [ ] Arsan Duolai
