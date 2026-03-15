@@ -35,10 +35,11 @@ The main points we aim to achieve are as follows:
    - [ ] Encryption
 
 ### Web Interface
-- [ ] Home Screen
-- [ ] Pilot Screen
-- [ ] Scanning view
-- [ ] Finalized map
+- [X] Home Screen
+- [X] Pilot Screen
+- [ ] ~~Scanning view~~
+- [ ] ~~Finalized map~~
+- [X] Viewing screen
 
 ### Backend
 - [ ] Receive Packet from raspberry pi
