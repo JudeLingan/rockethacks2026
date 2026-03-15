@@ -17,7 +17,7 @@ The main points we aim to achieve are as follows:
 - [x] Robot that moves
 - [X] Front-End Web-App Interface
 - [ ] ~Cybersecurity Optimization~
-- [ ] ~Lidar/IR Scanner~
+- [ ] Lidar/IR Scanner
 - [ ] Video Camera
 - [ ] Make Robot Autonomous
 
@@ -45,23 +45,22 @@ The main points we aim to achieve are as follows:
 - [X] Receive Packet from raspberry pi
 - [ ] Handle data from raspberry pi
 - [X] Send instruction to raspberry pi
-- [ ] Differentiate between ~telemetry~ and heartbeat packets
+- [X] Differentiate between ~telemetry~ and heartbeat packets
 
 ### Raspberry Pi
-- [ ] Client to recieve and send packets to Backend
-- [ ] Interprets commands for movement
-	- [ ] Speed
+- [X] Client to recieve and send packets to Backend
+- [X] Interprets commands for movement
+	- [ ] ~Speed~
 	- [X] Direction
 
 ### Robot
 - [x] IT MOVES!!!
-- [ ] ~Ultrasound/Lidar Scanning~
+- [ ] Ultrasound/Lidar Scanning
 - [ ] Full Autonomous Movement
-- [ ] CAD
+- [X] CAD
     - [x] Wheels
     - [x] Chassis
     - [x] Power Cell Holder
     - [ ] ~Streamlining~
-    - [x] Misc.
-### Robot Name
-- [x] Erebus
+    - [ ] ~Misc.~
+- [x] Name
