@@ -26,7 +26,7 @@ class BeanConfiguration implements WebSocketConfigurer {
 
     @Bean
     public UserHandler userHandler() {
-        return new UserHandler(connectionHandler);
+        return new UserHandler(connectionHandler());
     }
 
     @Override
