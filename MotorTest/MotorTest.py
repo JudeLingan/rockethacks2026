@@ -48,22 +48,16 @@ def right():
 def main():
   print("Testing")
   while True:
-    print("Forward") 
-    forward()
-    sleep(5)
-    stop()
-    print("Backward") 
-    backward()
-    sleep(5)
-    stop()
-    print("Left")
-    left()
-    sleep(5)
-    stop()
-    print("Right")
-    right()
-    sleep(5)
-    stop
-    sleep(10)
-
+    direction = input("")
+    match direction:
+      case 'w':
+        forward()
+      case 'a':
+        left()
+      case 's':
+        backward()
+      case 'd':
+        right()
+      case _:
+        stop()
 main()
