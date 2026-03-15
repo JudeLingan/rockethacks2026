@@ -6,19 +6,19 @@ leftMotorNeg = LED(27)
 rightMotorPos = LED(22)
 rightMotorNeg = LED(23)
 
-def leftCW():
-  leftMotorPos.on()
+def rightCCW():
+  leftMotorPos.off()
   leftMotorNeg.on()
 
-def leftCCW():
+def rightCW():
   leftMotorPos.on()
   leftMotorNeg.off()
 
-def rightCW():
-  rightMotorPos.on()
+def leftCCW():
+  rightMotorPos.off()
   rightMotorNeg.on()
 
-def rightCCW():
+def leftCW():
   rightMotorPos.on()
   rightMotorNeg.off()
 
@@ -29,18 +29,41 @@ def stop():
   rightMotorNeg.on()
   sleep(1)
 
+def forward():
+  leftCW()
+  rightCW()
+
+def backward():
+  leftCCW()
+  rightCCW()
+
+def left():
+  leftCCW()
+  rightCW()
+
+def right():
+  leftCW()
+  rightCCW()
+
 def main():
+  print("Testing")
   while True:
-    leftCW()
+    print("Forward") 
+    forward()
     sleep(5)
     stop()
-    leftCCW()
+    print("Backward") 
+    backward()
     sleep(5)
     stop()
-    rightCW()
+    print("Left")
+    left()
     sleep(5)
     stop()
-    rightCCW()
+    print("Right")
+    right()
     sleep(5)
     stop
     sleep(10)
+
+main()
