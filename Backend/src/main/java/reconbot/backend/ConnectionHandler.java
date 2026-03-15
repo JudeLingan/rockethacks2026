@@ -19,7 +19,9 @@ public class ConnectionHandler {
 		}
 		catch (Exception e) {
 			System.out.println(e.getMessage());
-			System.exit(1);
+		}
+		finally {
+			stop();
 		}
 	}
 

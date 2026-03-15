@@ -25,16 +25,17 @@ public class UserHandler {
 			in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 			while (true) {
 				String nextLine = in.readLine();
-				if (nextLine == null) continue;
+				if (nextLine == null) break;
 				System.out.println(nextLine);
 				connectionHandler.getOut().println(nextLine);
 			}
 		}
 		catch (Exception e) {
 			System.out.println(e.getMessage());
-			System.exit(1);
 		}
-		System.out.println("init complete");
+		finally {
+			stop();
+		}
 	}
 
 	public char getCurrentChar() {
