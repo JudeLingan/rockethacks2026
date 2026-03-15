@@ -10,19 +10,21 @@ public class ConnectionHandler {
 	private BufferedReader in;
 
 	public void start(int port) {
-		try {
-			System.out.println("Connection Started");
-			serverSocket = new ServerSocket(port);
-			clientSocket = serverSocket.accept();
-			out = new PrintWriter(clientSocket.getOutputStream(), true);
-			in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-			String nextLine = in.readLine();
-			System.out.println(nextLine);
-			out.println(nextLine);
-		}
-		catch (Exception e) {
-			System.out.println(e.getMessage());
-			System.exit(1);
+		while (true) {
+			try {
+				System.out.println("Connection Started");
+				serverSocket = new ServerSocket(port);
+				clientSocket = serverSocket.accept();
+				out = new PrintWriter(clientSocket.getOutputStream(), true);
+				in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+				String nextLine = in.readLine();
+				System.out.println(nextLine);
+				out.println(nextLine);
+			}
+			catch (Exception e) {
+				System.out.println(e.getMessage());
+				System.exit(1);
+			}
 		}
 	}
 
