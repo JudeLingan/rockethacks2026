@@ -492,7 +492,7 @@ function DemoScreen() {
               <div key={i} style={{ position:"absolute", width:20, height:20, zIndex:2, ...s }}/>
             ))}
             <iframe style={{ width:"100%", height:"100%", border:"none", display:"block" }}
-              src="https://www.youtube.com/embed/dQw4w9WgXcQ?rel=0&modestbranding=1&color=red"
+              src="https://www.youtube.com/shorts/fDU4EzS75yw"
               title="RocketHacks 2026 Demo"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen/>
