@@ -14,7 +14,7 @@ This is project made for the 2026 RocketHacks Hackathon. Team BlackWall consists
 ## Goals
 We aim to make a robot that moves and scans its environement, returning it to the user over the internet.
 The main points we aim to achieve are as follows:
-- [ ] Robot that moves
+- [x] Robot that moves
 - [ ] Front-End Web-App Interface
 - [ ] ~Cybersecurity Optimization~
 - [ ] ~Lidar/IR Scanner~
