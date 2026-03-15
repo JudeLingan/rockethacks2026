@@ -16,23 +16,23 @@ We aim to make a robot that moves and scans its environement, returning it to th
 The main points we aim to achieve are as follows:
 - [ ] Robot that moves
 - [ ] Front-End Web-App Interface
-- [ ] Cyber-Security Optimization
+- [ ] ~Cybersecurity Optimization~
 - [ ] ~Lidar/IR Scanner~
     - [ ] Video Camera
 - [ ] Make Robot Autonomous
 
-### Cyber-Security Objectives
-- [ ] Harden Network
-   - [ ] Solid Password/Passkey
-   - [ ] Port Mapping/Closing
-     - [ ] Port (p) 21
-     - [ ] p22 SSH
-     - [ ] p23 Telnet
-     - [ ] p25 SMTP
-     - [ ] p53 DNS
-     - [ ] etc: https://techhyme.com/40-commonly-targeted-ports-by-hackers/
-   - [ ] Firewall Implementation
-   - [ ] Encryption
+### ~Cyber-Security Objectives~
+- [ ] ~Harden Network~
+   - [ ] ~Solid Password/Passkey~
+   - [ ] ~Port Mapping/Closing~
+     - [ ] ~Port (p) 21~
+     - [ ] ~p22 SSH~
+     - [ ] ~p23 Telnet~
+     - [ ] ~p25 SMTP~
+     - [ ] ~p53 DNS~
+     - [ ] ~etc: https://techhyme.com/40-commonly-targeted-ports-by-hackers/~
+   - [ ] ~Firewall Implementation~
+   - [ ] ~Encryption~
 
 ### Web Interface
 - [X] Home Screen
@@ -45,7 +45,7 @@ The main points we aim to achieve are as follows:
 - [ ] Receive Packet from raspberry pi
 - [ ] Handle data from raspberry pi
 - [ ] Send instruction to raspberry pi
-- [ ] Differentiate between telemetry and heartbeat packets
+- [ ] Differentiate between ~telemetry~ and heartbeat packets
 
 ### Raspberry Pi
 - [ ] Client to recieve and send packets to Backend
@@ -54,12 +54,12 @@ The main points we aim to achieve are as follows:
 	- [ ] Direction
 
 ### Robot
-- [ ] IT MOVES!!!
-- [ ] Ultrasound/Lidar Scanning
+- [x] IT MOVES!!!
+- [ ] ~Ultrasound/Lidar Scanning~
 - [ ] Full Autonomous Movement
 - [ ] CAD
     - [x] Wheels
-    - [ ] Chassis
+    - [x] Chassis
     - [ ] Power Cell Holder
     - [ ] Streamlining
     - [ ] Misc.
