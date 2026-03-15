@@ -10,18 +10,22 @@ public class ConnectionHandler {
 	private BufferedReader in;
 
 	public void start(int port) {
+		boolean success = false;
 		try {
 			System.out.println("Connection Started");
 			serverSocket = new ServerSocket(port);
 			clientSocket = serverSocket.accept();
 			out = new PrintWriter(clientSocket.getOutputStream(), true);
 			in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+			success = true;
 		}
 		catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
 		finally {
-			stop();
+			if (!success) {
+				stop();
+			}
 		}
 	}
 
