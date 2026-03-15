@@ -137,8 +137,8 @@ function HomeScreen({ setPage }) {
           <span style={{ color:"var(--red)", WebkitTextStroke:"2px var(--red)", WebkitTextFillColor:"transparent" }}>CONTROL</span>
         </h1>
         <p style={{ color:"var(--white-dim)", fontSize:13, lineHeight:1.85, maxWidth:460, margin:"0 auto 46px" }}>
-          Real-time remote vehicle control over WebSocket, live MJPEG video feed,
-          and full keyboard + D-pad interface — all from your browser.
+          Real-time remote vehicle control over http with
+          full keyboard + D-pad interface — all from your browser.
         </p>
 
         <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(190px,1fr))", gap:12, marginBottom:44 }}>
@@ -160,7 +160,7 @@ function HomeScreen({ setPage }) {
         </div>
 
         <div style={{ display:"flex", gap:28, justifyContent:"center", borderTop:"1px solid var(--grey)", paddingTop:28, flexWrap:"wrap" }}>
-          {[["PLATFORM","Raspberry Pi 4B"],["CAMERA","USB Webcam MJPEG"],["COMMS","WebSocket / TCP"],["TEAM","RocketHacks 2026"]].map(([k,v])=>(
+          {[["Hardware","Raspberry Pi 4B"],["COMMS","WebSockets / TCP"],["TEAM","BlackWall"]].map(([k,v])=>(
             <div key={k} style={{ textAlign:"center" }}>
               <div style={{ fontSize:9, color:"var(--red)", letterSpacing:"0.25em" }}>{k}</div>
               <div style={{ fontSize:13, marginTop:5 }}>{v}</div>
@@ -442,7 +442,7 @@ const GALLERY = [
   { id:1, label:"RASPBERRY PI 4B — SIDE",  caption:"The brain of the system. 4GB RAM, dual-band WiFi, USB 3.0 for the webcam feed.", src:"https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Raspberry_Pi_4_Model_B_-_Side.jpg/1280px-Raspberry_Pi_4_Model_B_-_Side.jpg", tag:"HARDWARE" },
   { id:2, label:"PI 4B BOARD — TOP VIEW",  caption:"GPIO header used to interface directly with the RC ESC and steering servo via PWM.", src:"https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Raspberry_Pi_4_Model_B_01.svg/1280px-Raspberry_Pi_4_Model_B_01.svg.png",    tag:"HARDWARE" },
   { id:3, label:"RC CHASSIS PLATFORM",     caption:"Off-the-shelf RC chassis — motors and steering adapted for Raspberry Pi GPIO control.", src:"https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Tamiya_TT-02_chassis.jpg/1280px-Tamiya_TT-02_chassis.jpg",               tag:"VEHICLE"  },
-  { id:4, label:"USB WEBCAM",              caption:"Logitech-class USB cam streaming MJPEG over HTTP at 720p / 30fps with ~80ms latency.", src:"https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Logitech_C270_webcam.jpg/1280px-Logitech_C270_webcam.jpg",               tag:"CAMERA"   },
+  { id:4, label:"USB WEBCAM",              caption:"USB cam streaming MJPEG over WebSockets at 720p / 30fps with ~80ms latency.", src:"https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Logitech_C270_webcam.jpg/1280px-Logitech_C270_webcam.jpg",               tag:"CAMERA"   },
   { id:5, label:"PI PORTS — USB & HDMI",   caption:"USB 3.0 used for the webcam; micro-HDMI for initial headless setup and debugging.", src:"https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Raspberry_Pi_2_Model_B_v1.1_top_new_(bg_cut_out).jpg/1280px-Raspberry_Pi_2_Model_B_v1.1_top_new_(bg_cut_out).jpg", tag:"HARDWARE" },
   { id:6, label:"KEYBOARD CONTROL",        caption:"Full WASD + arrow key support — the browser talks directly to the Pi over local WiFi.", src:"https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Keyboard_noletters.jpg/1280px-Keyboard_noletters.jpg",               tag:"SOFTWARE" },
   { id:7, label:"GPIO PIN LAYOUT",         caption:"PWM output pins on the GPIO header drive the ESC (throttle) and servo (steering).", src:"https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Raspberry_Pi_GPIO_Layout_Model_B_Plus.svg/1280px-Raspberry_Pi_GPIO_Layout_Model_B_Plus.svg.png", tag:"HARDWARE" },
@@ -453,10 +453,10 @@ const SPECS = [
   { label:"BOARD",   value:"Raspberry Pi 4B — 4GB" },
   { label:"OS",      value:"RPi OS Lite 64-bit"     },
   { label:"CAMERA",  value:"USB Webcam 720p@30fps"  },
-  { label:"VIDEO",   value:"MJPEG ~80ms latency"    },
-  { label:"COMMS",   value:"WebSocket → TCP bridge" },
-  { label:"CONTROL", value:"Browser D-pad + KB"     },
-  { label:"RANGE",   value:"WiFi LAN ~50m typical"  },
+  { label:"VIDEO",   value:"~80ms latency"    },
+  { label:"COMMS",   value:"WebSockets → TCP bridge" },
+  { label:"CONTROL", value:"D-pad + KeyBoard"     },
+  { label:"RANGE",   value:"~50m over Wi-fi LAN"  },
   { label:"POWER",   value:"USB-C PD 5V 3A"         },
 ];
 
@@ -478,7 +478,6 @@ function DemoScreen() {
           <div style={{ fontSize:9, color:"var(--red)", letterSpacing:"0.35em", marginBottom:14 }}>ROCKETHACKS 2026 — SYSTEM DEMO</div>
           <h1 style={{ fontSize:"clamp(38px,8vw,72px)", lineHeight:0.9, marginBottom:18 }}>
             IN<span style={{ color:"var(--red)" }}>-</span>ACTION<br/>
-            <span style={{ WebkitTextStroke:"1.5px var(--grey-light)", WebkitTextFillColor:"transparent" }}>FOOTAGE</span>
           </h1>
           <p style={{ color:"var(--white-dim)", fontSize:13, lineHeight:1.85, maxWidth:500 }}>
             Watch the system in action — live video feed, real-time controls, and on-board footage from the RC vehicle platform.
@@ -506,12 +505,12 @@ function DemoScreen() {
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen/>
           </div>
-          <p style={{ marginTop:9, fontSize:10, color:"var(--grey-text)", letterSpacing:"0.1em" }}>Replace the YouTube video ID in the iframe src with your actual demo footage</p>
+          <p style={{ marginTop:9, fontSize:10, color:"var(--grey-text)", letterSpacing:"0.1em" }}>Quick demo of our Model (Yet to be made)</p>
         </div>
 
         {/* Performance stats */}
         <div style={{ marginBottom:64, display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(200px,1fr))", gap:12 }}>
-          {[{num:"~80ms",label:"VIDEO LATENCY",sub:"MJPEG over local WiFi"},{num:"<20ms",label:"CMD LATENCY",sub:"WebSocket round-trip"},{num:"720p",label:"STREAM RES",sub:"USB webcam @ 30fps"},{num:"50m+",label:"RANGE",sub:"802.11ac WiFi"}].map(({ num,label,sub }) => (
+          {[{num:"~80ms",label:"VIDEO LATENCY",sub:"Estimated MJPEG over local WiFi"},{num:"<20ms",label:"CMD LATENCY",sub:"Round-trip Command Cycle"},{num:"720p",label:"STREAM RES",sub:"Using a USB webcam @ 30fps"},{num:"50m+",label:"RANGE",sub:"802.11ac WiFi"}].map(({ num,label,sub }) => (
             <div key={label} style={{ background:"var(--surface)", border:"1px solid var(--grey)", borderRadius:3, padding:"24px 20px", borderTop:"2px solid var(--red)" }}>
               <div style={{ fontSize:40, color:"var(--red)", lineHeight:1, marginBottom:8 }}>{num}</div>
               <div style={{ fontSize:11, letterSpacing:"0.12em", marginBottom:5 }}>{label}</div>
@@ -595,7 +594,7 @@ function DemoScreen() {
 // ─── ABOUT ────────────────────────────────────────────────────────────────────
 const FAQ_ITEMS = [
   { q:"What WebSocket port does the Pi use?",               a:`By default the backend listens on port ${WS_PORT}. You can change this in the Config panel of the Control Interface before connecting.` },
-  { q:"What software serves the MJPEG stream?",             a:"We recommend mjpeg-streamer or motion on the Raspberry Pi 4B. It streams the USB webcam over HTTP on port 8080 with minimal latency — typically under 100ms on a local network." },
+  { q:"What software serves the MJPEG stream?",             a:"We recommend mjpeg-streamer or motion on the Raspberry Pi 4B. It streams the USB webcam over WebSockets on port 8080 with minimal latency — typically under 100ms on a local network." },
   { q:"Why WebSocket instead of raw TCP from the browser?", a:"Browsers can't open raw TCP sockets for security reasons. Our backend runs a WebSocket-to-TCP bridge on the Pi, so the frontend sends WebSocket messages which are forwarded directly to the RC control server." },
   { q:"What commands does the frontend send?",              a:"Single ASCII bytes: F (forward), B (backward), L (left), R (right), S (stop). Each command is exactly 1 byte — no JSON overhead, no framing." },
   { q:"Can I use this on mobile?",                          a:"Yes — the D-pad uses touch events and works on mobile browsers. Keyboard shortcuts are desktop only." },
@@ -604,12 +603,10 @@ const FAQ_ITEMS = [
 
 const TOOLS_USED = [
   { name:"Python 3",             icon:"🐍", role:"Backend language — WebSocket bridge + TCP client running on the Pi" },
-  { name:"websockets",           icon:"⚡", role:"Python async library — WebSocket server accepting browser connections" },
-  { name:"mjpeg-streamer",       icon:"📷", role:"Streams the USB webcam as MJPEG over HTTP for the browser video feed" },
   { name:"GPIO Zero / RPi.GPIO", icon:"🔌", role:"Python library — PWM signals to ESC (throttle) and servo (steering)" },
   { name:"React + Vite",         icon:"⚛", role:"Frontend framework — fast SPA with zero-reload screen navigation" },
   { name:"Raspberry Pi OS",      icon:"🐧", role:"Lite 64-bit headless OS running on the Pi 4B" },
-  { name:"WebSocket API",        icon:"🌐", role:"Browser-native WS client — sends raw 1-byte binary frames, no dependencies" },
+  { name:"WebSockets",        icon:"🌐", role:"Browser-native HTTP client — sends raw 1-byte binary, no dependencies" },
   { name:"Git / GitHub",         icon:"🐙", role:"Version control and public project hosting for the hackathon repo" },
 ];
 
@@ -628,9 +625,10 @@ function FAQItem({ q, a }) {
 
 function AboutScreen() {
   const sections = [
-    { tag:"01 — THE PROJECT",  title:"Remote RC Control\nOver TCP + WebSocket",  body:"RocketHacks 2026 is a real-time remote-controlled vehicle platform built on a Raspberry Pi 4B. The system bridges browser-based controls to physical RC hardware through a lightweight TCP server, delivering live video feedback via a USB webcam MJPEG stream — all with sub-100ms latency on a local network." },
-    { tag:"02 — HOW IT WORKS", title:"Architecture\nOverview",                   body:"The browser frontend connects via WebSocket to a Python bridge running on the Raspberry Pi. The bridge translates single-byte ASCII commands into TCP signals consumed by the RC controller process, which drives the vehicle's motors and steering. A separate MJPEG stream server broadcasts the USB webcam feed at low latency directly to the browser's video player — no plugins required." },
+    { tag:"01 — THE PROJECT",  title:"Remote RC Control\nOver TCP + WebSockets",  body:"RocketHacks 2026 is a real-time remote-controlled vehicle platform built on a Raspberry Pi 4B. The system bridges browser-based controls to physical RC hardware through a lightweight TCP server, delivering live video feedback via a USB webcam MJPEG stream — all with sub-100ms latency on a local network." },
+    { tag:"02 — HOW IT WORKS", title:"Architecture\nOverview",                   body:"The browser frontend connects via WebSockets to Java based bridge using sockets, which the connects to Python running on the Raspberry Pi. The bridge translates single-byte ASCII commands into TCP signals consumed by the RC controller process, which drives the vehicle's motors and steering." },
     { tag:"03 — INSPIRATION",  title:"Applications &\nMotivation",               body:"Inspired by search-and-rescue robotics, remote inspection drones, and FPV racing, this project explores how affordable single-board computers can bridge the gap between consumer RC hardware and professional teleoperation systems. The goal: a platform anyone can build, extend, and deploy." },
+	  {tag:"04 - IN 24HRS", title:"WHAT GOT\nDONE", body:"We achived a few of our main goals includeing: a moving system from web-interfaced user commands, a bi-directional socket based WebSockets/TCP network and a functioning robot made from a Raspberry Pi. "},
   ];
 
   return (
@@ -640,7 +638,7 @@ function AboutScreen() {
         <h1 style={{ fontSize:"clamp(36px,8vw,66px)", lineHeight:0.94, marginBottom:20 }}>
           ABOUT THE<br/><span style={{ color:"var(--red)" }}>PROJECT</span>
         </h1>
-        <p style={{ color:"var(--white-dim)", fontSize:13, lineHeight:1.9, maxWidth:560 }}>
+        <p style={{ color:"var(--white-dim)", fontSize:13, lineHeight:1.9, maxWidth:560, textAlign: "center", margin: "0 auto"}}>
           A hackathon-built remote control vehicle platform powered by Raspberry Pi 4B,
           real-time WebSocket telemetry, and live MJPEG video streaming.
         </p>
@@ -680,7 +678,7 @@ function AboutScreen() {
       <div style={{ background:"var(--surface)", border:"1px solid var(--grey)", borderRadius:3, padding:"24px 26px", marginBottom:56 }}>
         <div style={{ fontSize:9, color:"var(--grey-text)", letterSpacing:"0.22em", marginBottom:18 }}>TECH STACK</div>
         <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(138px,1fr))", gap:10 }}>
-          {[["HARDWARE","Raspberry Pi 4B"],["CAMERA","USB Webcam"],["VIDEO","MJPEG Stream"],["PROTOCOL","WebSocket + TCP"],["FRONTEND","React + Vite"],["LANGUAGE","Python / JS"]].map(([k,v]) => (
+          {[["HARDWARE","Raspberry Pi 4B"],["PROTOCOL","WebSockets + TCP"],["FRONTEND","React + Vite + Js"],["LANGUAGES","Python / Java / JS"]].map(([k,v]) => (
             <div key={k} style={{ background:"var(--surface2)", padding:"11px 13px", borderRadius:2 }}>
               <div style={{ fontSize:8, color:"var(--red)", letterSpacing:"0.22em", marginBottom:5 }}>{k}</div>
               <div style={{ fontSize:12 }}>{v}</div>
@@ -692,7 +690,7 @@ function AboutScreen() {
       <div style={{ marginBottom:56 }}>
         <div style={{ fontSize:9, color:"var(--grey-text)", letterSpacing:"0.22em", marginBottom:18 }}>THE TEAM</div>
         <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(175px,1fr))", gap:9 }}>
-          {[{ name:"Jude Lingan",role:"Lead Developer" },{ name:"Team Member 2",role:"Coming soon" },{ name:"Team Member 3",role:"Coming soon" }].map(({ name,role }) => (
+          {[{ name:"Jude Lingan",role:"Backend Developer" },{ name:"Anthony Machado",role:"Hardware Specialist\nFull Stack Programmer" },{ name:"Richard Smith",role:"Front-End Programmer\nGraphic Designer" },{name: "Gamma Johnson", role: "Cad Deigner\nRepository Maintainer"}].map(({ name,role }) => (
             <div key={name} style={{ background:"var(--surface)", border:"1px solid var(--grey)", borderRadius:3, padding:"16px 14px", display:"flex", alignItems:"center", gap:12 }}>
               <div style={{ width:36, height:36, borderRadius:"50%", background:"var(--red-glow)", border:"1px solid var(--red-border)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:12, color:"var(--red)", flexShrink:0 }}>{name.split(" ").map(w=>w[0]).join("").slice(0,2)}</div>
               <div>
@@ -701,13 +699,6 @@ function AboutScreen() {
               </div>
             </div>
           ))}
-        </div>
-      </div>
-
-      <div>
-        <div style={{ fontSize:9, color:"var(--grey-text)", letterSpacing:"0.22em", marginBottom:18 }}>FAQ</div>
-        <div style={{ border:"1px solid var(--grey)", borderRadius:3, padding:"0 17px" }}>
-          {FAQ_ITEMS.map((item,i) => <FAQItem key={i} {...item}/>)}
         </div>
       </div>
     </div>
